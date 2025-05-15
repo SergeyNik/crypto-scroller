@@ -14,7 +14,7 @@ public class ViewController {
         return Mono.just("Hello from Reactive Spring Boot!")
                 .map(message -> {
                     model.addAttribute("message", message);
-                    return "hello"; // Template name
+                    return "index";
                 });
     }
 }
