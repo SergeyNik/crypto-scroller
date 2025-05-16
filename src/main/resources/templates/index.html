@@ -2,22 +2,86 @@
 <html>
 <head>
     <title>Vue 3 REST Card App</title>
-    <!-- Vue 3 CDN -->
     <script src="https://unpkg.com/vue@3.5.14/dist/vue.global.prod.js"></script>
-    <!-- Vue Router 4 CDN -->
-    <script src="https://unpkg.com/vue-router@4.5.1/dist/vue-router.global.js"></script>
-    <!-- Vuex 4 CDN -->
     <script src="https://unpkg.com/vuex@4.1.0/dist/vuex.global.js"></script>
-    <!-- Axios CDN -->
     <script src="https://unpkg.com/axios@1.9.0/dist/axios.min.js"></script>
 
-    <!-- Bootstrap 5.3.6 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .scroll-container {
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .scroll-content {
+            display: flex;
+            flex-direction: column;
+            animation-name: scroll-up;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes scroll-up {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        .card {
+            margin-bottom: 10px;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .card-body {
+            padding: 150px;
+        }
+    </style>
+    <script>
+        const originalSymbols = [
+            'NASDAQ:AAPL',
+            'NASDAQ:TSLA',
+            'NASDAQ:GOOGL',
+            'NASDAQ:MSFT',
+            'NASDAQ:AMZN',
+            'NASDAQ:NFLX',
+            'NASDAQ:NVDA'
+        ]
+
+        // Дублируем массив вручную для seamless loop
+        const duplicatedSymbols = [...originalSymbols, ...originalSymbols]
+
+    </script>
 </head>
 
 <body>
+<div id="app" class="scroll-container">
+    <div class="scroll-content" :style="{ animationDuration: animationDuration + 's' }">
+        <div v-for="(symbol, index) in duplicatedSymbols" :key="index" class="card">
+            <div class="card-body">
+                {{ symbol }}
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Bootstrap 5.3.6 JS (with Popper) -->
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                duplicatedSymbols: duplicatedSymbols,
+                animationDuration: 10 // Настройте желаемую скорость анимации
+            }
+        }
+    }).mount('#app');
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
