@@ -1,87 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8"> <!-- Added charset for better compatibility -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added viewport for responsiveness -->
     <title>Vue 3 REST Card App</title>
-    <script src="https://unpkg.com/vue@3.5.14/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/vuex@4.1.0/dist/vuex.global.js"></script>
-    <script src="https://unpkg.com/axios@1.9.0/dist/axios.min.js"></script>
 
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/vue@3.5.14/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vuex@4.1.0/dist/vuex.global.js"></script> <!-- Note: Vuex is included but not used in this script -->
+    <script src="https://unpkg.com/axios@1.9.0/dist/axios.min.js"></script> <!-- Note: Axios is included but not used in this script -->
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
     <style>
+        /* Container for the scrolling content */
         .scroll-container {
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
+            height: 100vh; /* Full viewport height */
+            overflow: hidden; /* Hide content outside the container */
+            position: relative; /* Needed for absolute positioning if used, though not here */
         }
 
+        /* The content that will be scrolled */
         .scroll-content {
             display: flex;
-            flex-direction: column;
-            animation-name: scroll-up;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
+            flex-direction: column; /* Stack cards vertically */
+            animation-name: scroll-up; /* Link to the keyframes animation */
+            animation-timing-function: linear; /* Constant speed */
+            animation-iteration-count: infinite; /* Loop forever */
         }
 
+        /* Keyframes for the scrolling animation */
         @keyframes scroll-up {
             0% {
-                transform: translateY(0);
+                transform: translateY(0); /* Start at the original position */
             }
             100% {
-                transform: translateY(-50%);
+                transform: translateY(-50%); /* Move up by 50% of the content's height */
             }
         }
 
+        /* Styling for individual cards */
         .card {
-            margin-bottom: 10px;
-            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-            border-radius: 4px;
+            margin-bottom: 10px; /* Space between cards */
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2); /* Material Design like shadow */
+            border-radius: 4px; /* Rounded corners */
         }
 
+        /* Styling for the card body content */
         .card-body {
-            padding: 150px;
+            padding: 150px; /* Large padding to make cards tall */
+            text-align: center; /* Center the text inside the card */
+            font-size: 2em; /* Make the text larger */
+            font-weight: bold; /* Make the text bold */
         }
     </style>
-    <script>
-        const originalSymbols = [
-            'NASDAQ:AAPL',
-            'NASDAQ:TSLA',
-            'NASDAQ:GOOGL',
-            'NASDAQ:MSFT',
-            'NASDAQ:AMZN',
-            'NASDAQ:NFLX',
-            'NASDAQ:NVDA'
-        ]
-
-        // Дублируем массив вручную для seamless loop
-        const duplicatedSymbols = [...originalSymbols, ...originalSymbols]
-
-    </script>
 </head>
 
 <body>
+<!-- Main application container -->
 <div id="app" class="scroll-container">
+    <!-- The element that contains the items to be scrolled -->
     <div class="scroll-content" :style="{ animationDuration: animationDuration + 's' }">
+        <!-- Loop through duplicated symbols to create cards -->
+        <!-- The key is important for Vue's rendering performance -->
         <div v-for="(symbol, index) in duplicatedSymbols" :key="index" class="card">
             <div class="card-body">
-                {{ symbol }}
+                {{ symbol }} <!-- Display the symbol -->
             </div>
         </div>
     </div>
 </div>
 
+<!-- Vue.js Application Script -->
 <script>
+    // Define the original list of symbols
+    const originalSymbols = [
+        'NASDAQ:AAPL',
+        'NASDAQ:TSLA',
+        'NASDAQ:GOOGL',
+        'NASDAQ:MSFT',
+        'NASDAQ:AMZN',
+        'NASDAQ:NFLX',
+        'NASDAQ:NVDA'
+    ];
+
+    // Duplicate the array manually for a seamless loop effect
+    // By duplicating, when the animation reaches the end of the first set,
+    // it seamlessly transitions to the start of the second set, which looks like the beginning.
+    const duplicatedSymbols = [...originalSymbols, ...originalSymbols];
+
+    // Get the createApp function from the global Vue object
     const { createApp } = Vue;
 
+    // Create and mount the Vue application
     createApp({
+        // Data properties for the application
         data() {
             return {
+                // The list of symbols to display (duplicated for scrolling)
                 duplicatedSymbols: duplicatedSymbols,
-                animationDuration: 10 // Настройте желаемую скорость анимации
-            }
+                // The duration of the scrolling animation in seconds
+                animationDuration: 120
+            };
         }
+        // Mount the application to the element with id="app"
     }).mount('#app');
 </script>
 
+<!-- Bootstrap JS (for components that require it, though none are used here) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
